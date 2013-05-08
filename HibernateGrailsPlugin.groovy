@@ -27,7 +27,7 @@ class HibernateGrailsPlugin {
     def description = "Provides integration between Grails and Hibernate 3 through GORM"
 
     def grailsVersion = "2.3 > *"
-    def version = "3.6.10.M2"
+    def version = "3.6.10.M3"
     def observe = ['domainClass']
     def loadAfter = ['controllers', 'domainClass']
     def watchedResources = ["file:./grails-app/conf/hibernate/**.xml"]
