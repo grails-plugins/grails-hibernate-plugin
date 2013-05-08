@@ -126,6 +126,7 @@ class ValidatePersistentMethodTests extends AbstractGrailsHibernateTests {
         def homePageError = team.errors.getFieldError('homePage')
         assertTrue 'did not find typeMismatch error', 'typeMismatch' in homePageError.codes
 
+        team.clearErrors()
         team.homePage = new URL('http://grails.org')
         assertFalse 'validation should have failed', team.validate()
         assertEquals 'wrong number of errors found', 1, team.errors.errorCount
