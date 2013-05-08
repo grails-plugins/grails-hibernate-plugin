@@ -12,15 +12,18 @@ import org.codehaus.groovy.grails.plugins.GrailsPluginManager
 import org.codehaus.groovy.grails.plugins.MockGrailsPluginManager
 import org.codehaus.groovy.grails.plugins.PluginManagerHolder
 import org.codehaus.groovy.grails.support.MockApplicationContext
+import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes
 import org.hibernate.EntityMode
 import org.hibernate.Session
 import org.hibernate.SessionFactory
 import org.springframework.context.ApplicationContext
 import org.springframework.context.support.StaticMessageSource
+import org.springframework.mock.web.MockServletContext
 import org.springframework.orm.hibernate3.SessionFactoryUtils
 import org.springframework.orm.hibernate3.SessionHolder
 import org.springframework.transaction.support.TransactionSynchronizationManager
 import org.springframework.util.Log4jConfigurer
+import org.springframework.web.context.WebApplicationContext
 import org.springframework.web.context.request.RequestContextHolder
 
 import spock.lang.Specification
@@ -58,10 +61,17 @@ abstract class GormSpec extends Specification {
         parentCtx.registerMockBean("messageSource", new StaticMessageSource())
 
         def springConfig = new WebRuntimeSpringConfiguration(parentCtx, gcl)
+        def servletContext = new MockServletContext()
+        springConfig.servletContext = servletContext
+
         doWithRuntimeConfiguration dependentPlugins, springConfig
 
         grailsApplication.setMainContext(springConfig.getUnrefreshedApplicationContext())
         applicationContext = springConfig.getApplicationContext()
+
+        servletContext.setAttribute(GrailsApplicationAttributes.APPLICATION_CONTEXT, applicationContext)
+        servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, applicationContext)
+
         dependentPlugins*.doWithApplicationContext(applicationContext)
 
         mockManager.applicationContext = applicationContext
