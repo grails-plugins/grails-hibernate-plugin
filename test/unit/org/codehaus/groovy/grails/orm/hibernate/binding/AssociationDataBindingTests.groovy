@@ -331,19 +331,24 @@ class AssociationBindingAuthor {
 
         author.properties = request
 
-        def books = author.books.iterator()
-        def b1 = books.next()
-        def b2 = books.next()
-
-        assertEquals "The Shining", b1.title
-        assertEquals 3, b1.pages.size()
-        assertEquals 1, b1.pages[0].number
-        assertEquals 2, b1.pages[1].number
-        assertEquals 3, b1.pages[2].number
-
-        assertEquals 3, b1.reviewers.size()
-        assertEquals "Fred Bloggs", b1.reviewers['fred'].name
-        assertEquals "The Stand", b2.title
+        def books = author.books
+        def theShining = books.find { it.title == 'The Shining' }
+        assertNotNull theShining
+        
+        assertEquals 3, theShining.pages.size()
+        
+        assertEquals 1, theShining.pages[0].number
+        assertEquals 2, theShining.pages[1].number
+        assertEquals 3, theShining.pages[2].number
+        
+        assertEquals 3, theShining.reviewers.size()
+        
+        assertEquals 'Fred Bloggs', theShining.reviewers['fred'].name
+        assertEquals 'Bob Bloggs', theShining.reviewers['bob'].name
+        assertEquals 'Chuck Bloggs', theShining.reviewers['chuck'].name
+        
+        def theStand = books.find { it.title == 'The Stand' }
+        assertNotNull theStand
 
         assertNotNull "author should have saved", author.save(flush:true)
 
@@ -352,18 +357,20 @@ class AssociationBindingAuthor {
         author = Author.get(1)
         assertEquals 2, author.books.size()
 
-        b1 = author.books.find { it.title == 'The Shining'}
-        assertNotNull b1
+        theShining = author.books.find { it.title == 'The Shining'}
+        assertNotNull theShining
 
-        assertEquals "The Shining", b1.title
-        assertEquals 3, b1.pages.size()
-        assertEquals 1, b1.pages[0].number
-        assertEquals 2, b1.pages[1].number
-        assertEquals 3, b1.pages[2].number
+        assertEquals "The Shining", theShining.title
+        assertEquals 3, theShining.pages.size()
+        assertEquals 1, theShining.pages[0].number
+        assertEquals 2, theShining.pages[1].number
+        assertEquals 3, theShining.pages[2].number
 
-        assertEquals 3, b1.reviewers.size()
-        assertEquals "Fred Bloggs", b1.reviewers['fred'].name
-        assertEquals "The Stand", b2.title
+        assertEquals 3, theShining.reviewers.size()
+        assertEquals "Fred Bloggs", theShining.reviewers['fred'].name
+        
+        theStand = author.books.find { it.title == 'The Stand' }
+        assertEquals "The Stand", theStand.title
     }
 
     void testOneToManyBindingWithAnArrayOfStrings() {
