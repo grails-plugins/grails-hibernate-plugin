@@ -13,7 +13,7 @@ grails.project.dependency.resolution = {
 
     dependencies {
 
-        String datastoreVersion = '2.0.0.M3'
+        String datastoreVersion = '2.0.0.BUILD-SNAPSHOT'
 
         compile "org.grails:grails-datastore-gorm-hibernate:$datastoreVersion"
 
