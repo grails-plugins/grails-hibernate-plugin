@@ -3,8 +3,10 @@ package org.codehaus.groovy.grails.orm.hibernate.cfg
 import org.hibernate.Criteria
 import static org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsHibernateUtil.*
 import org.hibernate.FlushMode
+import org.grails.datastore.mapping.model.types.conversion.DefaultConversionService
 
 class GrailsHibernateUtilTests extends GroovyTestCase {
+    static conversionService = new DefaultConversionService()
     @Override protected void setUp() {
         super.setUp()
     }
@@ -37,7 +39,7 @@ class GrailsHibernateUtilTests extends GroovyTestCase {
                 }
         ] as Criteria
 
-        GrailsHibernateUtil.populateArgumentsForCriteria(null, null, criteria, [(keyName): value])
+        GrailsHibernateUtil.populateArgumentsForCriteria(null, null, criteria, [(keyName): value], conversionService)
         assertTrue methodCalled
     }
 
@@ -53,7 +55,7 @@ class GrailsHibernateUtilTests extends GroovyTestCase {
                 }
         ] as Criteria
 
-        GrailsHibernateUtil.populateArgumentsForCriteria(null, null, criteria, [flushMode: value])
+        GrailsHibernateUtil.populateArgumentsForCriteria(null, null, criteria, [flushMode: value], conversionService)
         assertTrue methodCalled
     }
 }
