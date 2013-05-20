@@ -313,6 +313,7 @@ class HibernateCriteriaBuilderTests extends AbstractGrailsHibernateTests {
 
         HibernateCriteriaBuilder hcb = new HibernateCriteriaBuilder(CriteriaBuilderTestClass, sessionFactory)
         hcb.grailsApplication = ga
+        hcb.conversionService = new org.grails.datastore.mapping.model.types.conversion.DefaultConversionService()
         List results = hcb.list(sort: 'parent.firstName', order: 'asc') {
                     eq('firstName','Bart')
                     parent {
