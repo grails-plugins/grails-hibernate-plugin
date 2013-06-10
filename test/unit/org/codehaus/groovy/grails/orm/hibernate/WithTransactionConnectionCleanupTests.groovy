@@ -47,12 +47,9 @@ class WithTransactionConnectionCleanupTests extends AbstractGrailsHibernateTests
 
     private void nestedWithNewSessionWithNewTransactionLoop(boolean unbindSessionHolder = false) {
         100.times { i ->
-            println "Will start withNewSession (${i})"
             def currentSession = session
             BookLeak.withNewSession { session ->
                 assert currentSession  != session
-                println "Session is transactional : ${SessionFactoryUtils.isSessionTransactional(session, sessionFactory)}"
-                println "Will start withTransaction (${i})"
                 Long authorId = AuthorLeak.withTransaction {
                     AuthorLeak author = new AuthorLeak(firstName: 'John', lastName: "Doe ${i}")
                     author.save()
@@ -63,35 +60,27 @@ class WithTransactionConnectionCleanupTests extends AbstractGrailsHibernateTests
 //                author.save()
 //                Long authorId =  author.id
 
-                println "Ended withTransaction (${i})"
                 AuthorLeak another = AuthorLeak.get(authorId)
                 BookLeak book = new BookLeak(title: "The story of ${i}")
                 another.addToBooks(book)
                 another.save()
             }
             if (unbindSessionHolder) {
-                println "Unbinding session holder (${i})"
                 TransactionSynchronizationManager.unbindResource(sessionFactory)
             }
-            println "Ended withNewSession (${i})"
         }
     }
 
     private void nestedSafeWithNewSessionWithNewTransactionLoop(boolean withException = false) {
         100.times { i ->
-            println "Will start withNewSession (${i})"
             def currentSession = session
             safeWithNewSession { session ->
                 assert currentSession  != session
-                println "Session is transactional : ${SessionFactoryUtils.isSessionTransactional(session, sessionFactory)}"
-                println "Deferred close is active : ${SessionFactoryUtils.isDeferredCloseActive(sessionFactory)}"
-                println "Will start withTransaction (${i})"
                 Long authorId = AuthorLeak.withTransaction {
                     AuthorLeak author = new AuthorLeak(firstName: 'John', lastName: "Doe ${i}")
                     author.save()
                     author.id
                 }
-                println "Ended withTransaction (${i})"
                 AuthorLeak another = AuthorLeak.get(authorId)
                 BookLeak book = new BookLeak(title: "The story of ${i}")
                 another.addToBooks(book)
@@ -100,7 +89,6 @@ class WithTransactionConnectionCleanupTests extends AbstractGrailsHibernateTests
                 }
                 another.save()
             }
-            println "Ended withNewSession (${i})"
         }
     }
 

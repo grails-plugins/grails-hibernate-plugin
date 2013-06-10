@@ -55,7 +55,6 @@ public abstract class AbstractGrailsMockTests extends GroovyTestCase {
         ExpandoMetaClass.enableGlobally();
         super.setUp();
 
-        System.out.println("Setting up test");
         ctx = new MockApplicationContext();
         ctx.registerMockBean(GrailsRuntimeConfigurator.CLASS_LOADER_BEAN, gcl);
         onSetUp();

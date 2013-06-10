@@ -2,13 +2,19 @@ package org.codehaus.groovy.grails.orm.hibernate
 
 import grails.persistence.Entity
 
+import org.hibernate.event.FlushEvent
 import org.hibernate.event.FlushEventListener
 
 class AutoFlushPropertyTests extends AbstractGrailsHibernateTests {
 
     private int flushCount = 0
-    private listener = { flushEvent -> ++flushCount } as FlushEventListener
     private band
+
+    private FlushEventListener listener = new FlushEventListener() {
+        void onFlush(FlushEvent e) {
+            ++flushCount
+        }
+    }
 
     protected getDomainClasses() {
         [AutoFlushBand]

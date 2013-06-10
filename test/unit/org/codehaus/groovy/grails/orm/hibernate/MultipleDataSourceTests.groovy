@@ -503,7 +503,7 @@ hibernate {
         assertFalse instance.ds3.validate()
         assertFalse instance.ds4.validate()
         shouldFail(MissingPropertyException) {
-            println instance.ds5.validate()
+            instance.ds5.validate()
         }
 
         instance.name = 'all!'

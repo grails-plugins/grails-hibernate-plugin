@@ -117,9 +117,7 @@ class ValidatePersistentMethodTests extends AbstractGrailsHibernateTests {
     }
 
     void testValidationAfterBindingErrors() {
-        def teamClass = ga.getDomainClass(ValidateTeam.name)
-        def team = teamClass.newInstance()
-        team.properties = [homePage: 'invalidurl']
+        def team = new ValidateTeam(homePage: 'invalidurl')
         assertFalse 'validation should have failed', team.validate()
         assertEquals 'wrong number of errors found', 2, team.errors.errorCount
         assertEquals 'wrong number of homePage errors found', 1, team.errors.getFieldErrors('homePage')?.size()

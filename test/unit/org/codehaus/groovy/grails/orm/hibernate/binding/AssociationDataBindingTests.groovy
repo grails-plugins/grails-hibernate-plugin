@@ -18,32 +18,31 @@ import grails.persistence.*
 
 @Entity
 class AssociationBindingReviewer {
-
     String name
     Integer age = 25
 }
+
 @Entity
 class AssociationBindingPage {
     Integer number
 }
+
 @Entity
 class AssociationBindingBook {
-
     String title
     List pages
     Map  reviewers
     static belongsTo = [author: AssociationBindingAuthor]
     static hasMany = [pages:AssociationBindingPage, reviewers:AssociationBindingReviewer]
 }
+
 @Entity
 class AssociationBindingBook2 {
-
     String title
 }
 
 @Entity
 class AssociationBindingAuthor {
-
     String name
     static hasMany = [books: AssociationBindingBook, moreBooks:AssociationBindingBook2]
 }
