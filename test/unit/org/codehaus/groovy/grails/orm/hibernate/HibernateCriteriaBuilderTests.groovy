@@ -1666,7 +1666,6 @@ class HibernateCriteriaBuilderTests extends AbstractGrailsHibernateTests {
     void testPaginationParams() {
         GrailsDomainClass domainClass = grailsApplication.getArtefact(DomainClassArtefactHandler.TYPE,
             CriteriaBuilderTestClass.name)
-
         assertNotNull(domainClass)
 
         GroovyObject obj = domainClass.newInstance()
@@ -1784,29 +1783,35 @@ class HibernateCriteriaBuilderTests extends AbstractGrailsHibernateTests {
         assert 'Second Good Publisher' in names
     }
 
-    private Object parse(String groovy,String testClassName, String criteriaClassName, boolean uniqueResult) {
+    private Object parse(String groovy, String testClassName, String criteriaClassName, boolean uniqueResult) {
 
         GroovyClassLoader cl = grailsApplication.getClassLoader()
-        String unique =(uniqueResult?",true":"")
-        Class clazz =
-        cl.parseClass("package test\n" +
-                         "import grails.orm.*\n" +
-                         "import org.hibernate.*\n" +
-                         "class "+testClassName+" {\n" +
-                             "SessionFactory sf\n" +
-                             "Class tc\n" +
-                             "Closure test = {\n" +
-                                 "def hcb = new HibernateCriteriaBuilder(tc,sf"+unique+")\n" +
-                                 "return hcb" + groovy +"\n" +
-                             "}\n" +
-                         "}")
+        String unique = uniqueResult ? ",true" : ""
+        Class clazz = cl.parseClass("""
+package test
+
+import grails.orm.*
+import org.hibernate.*
+import org.springframework.core.convert.ConversionService
+
+class $testClassName {
+
+   SessionFactory sf
+   Class tc
+   ConversionService cs
+
+   Closure test = {
+      def hcb = new HibernateCriteriaBuilder(tc, sf$unique)
+      hcb.conversionService = cs
+      return hcb$groovy
+   }
+}""")
         GroovyObject go = clazz.newInstance()
         go.setProperty("sf", sessionFactory)
+        go.setProperty("tc", grailsApplication.getDomainClass(criteriaClassName).clazz)
+        go.setProperty("cs", grailsApplication.mainContext.hibernateDatastore.mappingContext.conversionService)
 
-        Class tc = grailsApplication.getArtefact(DomainClassArtefactHandler.TYPE, criteriaClassName).getClazz()
-        go.setProperty("tc", tc)
-
-        Closure closure = (Closure)go.getProperty("test")
+        Closure closure = go.getProperty("test")
         return closure.call()
     }
 
