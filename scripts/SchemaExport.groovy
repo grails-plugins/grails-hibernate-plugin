@@ -25,7 +25,7 @@ includeTargets << grailsScript('_GrailsBootstrap')
  */
 
 target(schemaExport: 'Run Hibernate SchemaExport') {
-    depends checkVersion, configureProxy, enableExpandoMetaClass, bootstrap
+    depends checkVersion, configureProxy, enableExpandoMetaClass, compile, bootstrap
 
     String filename = "${grailsSettings.projectTargetDir}/ddl.sql"
     boolean export = false
