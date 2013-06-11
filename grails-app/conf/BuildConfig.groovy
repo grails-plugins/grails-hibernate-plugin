@@ -1,5 +1,14 @@
 grails.project.work.dir = 'target'
 
+forkConfig = false
+grails.project.fork = [
+    test:    forkConfig, // configure settings for the test-app JVM
+    run:     forkConfig, // configure settings for the run-app JVM
+    war:     forkConfig, // configure settings for the run-war JVM
+    console: forkConfig, // configure settings for the Swing console JVM
+    compile: forkConfig  // configure settings for compilation
+]
+
 grails.project.dependency.resolver = "maven"
 grails.project.dependency.resolution = {
 
@@ -13,7 +22,7 @@ grails.project.dependency.resolution = {
 
     dependencies {
 
-        String datastoreVersion = '2.0.0.M3'
+        String datastoreVersion = '2.0.0.BUILD-SNAPSHOT'
 
         compile "org.grails:grails-datastore-gorm-hibernate:$datastoreVersion"
 
