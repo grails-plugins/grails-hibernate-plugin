@@ -446,7 +446,7 @@ hibernate {
         assertFalse instance.ds2.validate()
         assertFalse instance.ds3.validate()
         shouldFail(MissingPropertyException) {
-            println instance.ds4.validate()
+            instance.ds4.validate()
         }
 
         instance.name = 'two!'

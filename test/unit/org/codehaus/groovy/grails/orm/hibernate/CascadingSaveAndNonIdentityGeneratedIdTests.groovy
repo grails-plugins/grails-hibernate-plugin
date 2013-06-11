@@ -42,7 +42,6 @@ class Attribute {
     }
 }
 '''
-      println "Parsed!"
     }
 
     void testCascadingSaveToMultipleLevels() {

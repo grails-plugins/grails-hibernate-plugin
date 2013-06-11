@@ -18,7 +18,6 @@ class CustomCascadeMappingOne {
 
     static mapping = { applicationContext ->
         assert applicationContext != null
-        println applicationContext
         foos cascade:'none', joinTable:'foos'
         bars cascade:'all', joinTable:'bars'
     }
