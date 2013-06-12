@@ -7,6 +7,7 @@ import org.codehaus.groovy.grails.commons.GrailsDomainClass
 import org.codehaus.groovy.grails.orm.hibernate.exceptions.GrailsQueryException
 import org.codehaus.groovy.grails.orm.hibernate.metaclass.FindByPersistentMethod
 import org.codehaus.groovy.runtime.metaclass.MethodSelectionException
+import org.springframework.core.convert.ConversionFailedException
 import org.springframework.validation.Errors
 
 /**
@@ -306,7 +307,7 @@ class PersistenceMethodTests extends AbstractGrailsHibernateTests {
         assertEquals 1, returnList.size()
 
         // and case when automatic conversion cannot be applied
-        shouldFail(MissingMethodException) {
+        shouldFail(ConversionFailedException) {
             returnList = domainClass.findAllById("1.1")
         }
 
