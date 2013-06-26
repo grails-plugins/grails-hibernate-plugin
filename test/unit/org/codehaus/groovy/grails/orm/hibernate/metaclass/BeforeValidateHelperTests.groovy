@@ -2,12 +2,7 @@ package org.codehaus.groovy.grails.orm.hibernate.metaclass
 
 class BeforeValidateHelperTests extends GroovyTestCase {
 
-    def beforeValidateHelper
-
-    void setUp() {
-        super.setUp()
-        beforeValidateHelper = new BeforeValidateHelper()
-    }
+    private BeforeValidateHelper beforeValidateHelper = new BeforeValidateHelper()
 
     void testNoArgBeforeValidate() {
         def obj = new ClassWithNoArgBeforeValidate()

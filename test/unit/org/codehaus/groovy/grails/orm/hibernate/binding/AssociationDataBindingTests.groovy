@@ -333,19 +333,19 @@ class AssociationBindingAuthor {
         def books = author.books
         def theShining = books.find { it.title == 'The Shining' }
         assertNotNull theShining
-        
+
         assertEquals 3, theShining.pages.size()
-        
+
         assertEquals 1, theShining.pages[0].number
         assertEquals 2, theShining.pages[1].number
         assertEquals 3, theShining.pages[2].number
-        
+
         assertEquals 3, theShining.reviewers.size()
-        
+
         assertEquals 'Fred Bloggs', theShining.reviewers['fred'].name
         assertEquals 'Bob Bloggs', theShining.reviewers['bob'].name
         assertEquals 'Chuck Bloggs', theShining.reviewers['chuck'].name
-        
+
         def theStand = books.find { it.title == 'The Stand' }
         assertNotNull theStand
 
@@ -367,7 +367,7 @@ class AssociationBindingAuthor {
 
         assertEquals 3, theShining.reviewers.size()
         assertEquals "Fred Bloggs", theShining.reviewers['fred'].name
-        
+
         theStand = author.books.find { it.title == 'The Stand' }
         assertEquals "The Stand", theStand.title
     }
