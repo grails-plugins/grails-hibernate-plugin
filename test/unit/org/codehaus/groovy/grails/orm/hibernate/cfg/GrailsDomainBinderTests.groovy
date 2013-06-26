@@ -234,6 +234,7 @@ class TablePerSubclassSubclass extends TablePerSubclassSuperclass {
 '''
 
     private GroovyClassLoader cl = new GroovyClassLoader()
+    private GrailsDomainBinder grailsDomainBinder = new GrailsDomainBinder()
 
     private Class previousNamingStrategyClass
 
@@ -243,17 +244,17 @@ class TablePerSubclassSubclass extends TablePerSubclassSuperclass {
         ExpandoMetaClass.enableGlobally()
         MockGrailsPluginManager pluginManager = new MockGrailsPluginManager()
         PluginManagerHolder.setPluginManager(pluginManager)
-        previousNamingStrategyClass = GrailsDomainBinder.NAMING_STRATEGIES[GrailsDomainClassProperty.DEFAULT_DATA_SOURCE].getClass()
+        previousNamingStrategyClass = grailsDomainBinder.NAMING_STRATEGIES[GrailsDomainClassProperty.DEFAULT_DATA_SOURCE].getClass()
     }
 
     @Override
     protected void tearDown() {
         super.tearDown()
-        GrailsDomainBinder.NAMING_STRATEGIES.clear()
-        GrailsDomainBinder.NAMING_STRATEGIES.put(
+        grailsDomainBinder.NAMING_STRATEGIES.clear()
+        grailsDomainBinder.NAMING_STRATEGIES.put(
               GrailsDomainClassProperty.DEFAULT_DATA_SOURCE, ImprovedNamingStrategy.INSTANCE)
         PluginManagerHolder.setPluginManager(null)
-        GrailsDomainBinder.configureNamingStrategy previousNamingStrategyClass
+        grailsDomainBinder.configureNamingStrategy previousNamingStrategyClass
     }
 
     /**
@@ -953,7 +954,7 @@ grails.gorm.myPlugin.table.prefix.enabled = false
 
         // somewhat artificial in that it doesn't test that setting the property
         // in DataSource.groovy works, but that's handled in DataSourceConfigurationTests
-        GrailsDomainBinder.configureNamingStrategy(CustomNamingStrategy)
+        grailsDomainBinder.configureNamingStrategy(CustomNamingStrategy)
 
         GrailsDomainClass oneClass = new DefaultGrailsDomainClass(
             cl.parseClass('''
@@ -1010,7 +1011,7 @@ class TestManySide {
 
     void testCustomNamingStrategyWithCollection() {
 
-        GrailsDomainBinder.configureNamingStrategy(CustomNamingStrategy)
+        grailsDomainBinder.configureNamingStrategy(CustomNamingStrategy)
 
         GrailsDomainClass oneClass = new DefaultGrailsDomainClass(
             cl.parseClass('''
@@ -1037,7 +1038,7 @@ class TestManySide2 {
         // somewhat artificial in that it doesn't test that setting the property
         // in DataSource.groovy works, but that's handled in DataSourceConfigurationTests
         def instance = new CustomNamingStrategy()
-        GrailsDomainBinder.configureNamingStrategy(instance)
+        grailsDomainBinder.configureNamingStrategy(instance)
 
         GrailsDomainClass oneClass = new DefaultGrailsDomainClass(
             cl.parseClass('''
@@ -1048,8 +1049,8 @@ class TestOneSide {
     String barDescriPtion
 }'''))
 
-        assert instance.is(GrailsDomainBinder.getNamingStrategy('sessionFactory'))
-        assert instance.is(GrailsDomainBinder.NAMING_STRATEGIES.DEFAULT)
+        assert instance.is(grailsDomainBinder.getNamingStrategy('sessionFactory'))
+        assert instance.is(grailsDomainBinder.NAMING_STRATEGIES.DEFAULT)
 
         DefaultGrailsDomainConfiguration config = getDomainConfig(cl, [oneClass.clazz])
 
@@ -1140,7 +1141,7 @@ class CascadeParent {
         child cascade: '${cascadeValue}'
     }
 }"""))
-        GrailsDomainBinder.evaluateMapping(cascadeParent)
+        grailsDomainBinder.evaluateMapping(cascadeParent)
         return cascadeParent.persistentProperties.find { it.name == 'child' }
     }
 
@@ -1207,13 +1208,13 @@ class CascadeParent {
 
     private void assertColumnLength(ConstrainedProperty constrainedProperty, int expectedLength) {
         Column column = new Column()
-        GrailsDomainBinder.bindStringColumnConstraints(column, constrainedProperty)
+        grailsDomainBinder.bindStringColumnConstraints(column, constrainedProperty)
         assertEquals(expectedLength, column.length)
     }
 
     private void assertColumnPrecisionAndScale(ConstrainedProperty constrainedProperty, int expectedPrecision, int expectedScale) {
         Column column = new Column()
-        GrailsDomainBinder.bindNumericColumnConstraints(column, constrainedProperty)
+        grailsDomainBinder.bindNumericColumnConstraints(column, constrainedProperty)
         assertEquals(expectedPrecision, column.precision)
         assertEquals(expectedScale, column.scale)
     }

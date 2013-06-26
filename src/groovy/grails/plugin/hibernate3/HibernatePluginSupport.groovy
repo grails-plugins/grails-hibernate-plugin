@@ -68,6 +68,8 @@ class HibernatePluginSupport {
     static final Logger LOG = LoggerFactory.getLogger(this)
     static final int RELOAD_RETRY_LIMIT = 3
 
+    static GrailsDomainBinder grailsDomainBinder = new GrailsDomainBinder()
+
     static doWithSpring = {
 
         if (getSpringConfig().containsBean(ConstraintsEvaluator.BEAN_NAME)) {
@@ -199,12 +201,12 @@ Using Grails' default cache region factory: 'net.sf.ehcache.hibernate.EhCacheReg
 
                 def namingStrategy = hibConfig.naming_strategy ?: ImprovedNamingStrategy
                 try {
-                    GrailsDomainBinder.configureNamingStrategy datasourceName, namingStrategy
+                    grailsDomainBinder.configureNamingStrategy datasourceName, namingStrategy
                 }
                 catch (Throwable t) {
                     log.error """WARNING: You've configured a custom Hibernate naming strategy '$namingStrategy' in DataSource.groovy, however the class cannot be found.
 Using Grails' default naming strategy: '${ImprovedNamingStrategy.name}'"""
-                    GrailsDomainBinder.configureNamingStrategy datasourceName, ImprovedNamingStrategy
+                    grailsDomainBinder.configureNamingStrategy datasourceName, ImprovedNamingStrategy
                 }
 
                 // allow adding hibernate properties that don't start with "hibernate."
@@ -348,7 +350,7 @@ Using Grails' default naming strategy: '${ImprovedNamingStrategy.name}'"""
             if (!dc.getMappingStrategy().equalsIgnoreCase(GrailsDomainClass.GORM)) {
                 return
             }
-            GrailsDomainBinder.clearMappingCache(event.source)
+            grailsDomainBinder.clearMappingCache(event.source)
             def dcMappingDsNames = GrailsHibernateUtil.getDatasourceNames(dc) as Set
             datasourceNames = [] as Set
             for(name in allDatasourceNames) {
@@ -357,7 +359,7 @@ Using Grails' default naming strategy: '${ImprovedNamingStrategy.name}'"""
                 }
             }
         } else {
-            GrailsDomainBinder.clearMappingCache()
+            grailsDomainBinder.clearMappingCache()
             datasourceNames = allDatasourceNames
         }
 

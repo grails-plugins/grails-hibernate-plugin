@@ -12,6 +12,7 @@ import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.codehaus.groovy.grails.commons.cfg.ConfigurationHelper
 import org.codehaus.groovy.grails.commons.spring.GrailsRuntimeConfigurator
 import org.codehaus.groovy.grails.commons.spring.WebRuntimeSpringConfiguration
+import org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsDomainBinder
 import org.codehaus.groovy.grails.plugins.DefaultGrailsPlugin
 import org.codehaus.groovy.grails.plugins.DefaultPluginMetaManager
 import org.codehaus.groovy.grails.plugins.GrailsPluginManager
@@ -53,6 +54,7 @@ abstract class AbstractGrailsHibernateTests extends GroovyTestCase {
     def originalHandler
     SessionFactory sessionFactory
     Session session
+    GrailsDomainBinder grailsDomainBinder = new GrailsDomainBinder()
 
     protected void onSetUp() {}
 

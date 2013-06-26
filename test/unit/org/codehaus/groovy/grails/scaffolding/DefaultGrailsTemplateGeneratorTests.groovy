@@ -26,6 +26,7 @@ class DefaultGrailsTemplateGeneratorTests extends GroovyTestCase {
     private MockGrailsPluginManager pluginManager
     private GroovyClassLoader gcl = new GroovyClassLoader(Thread.currentThread().getContextClassLoader())
     private DefaultGrailsTemplateGenerator templateGenerator = new DefaultGrailsTemplateGenerator(gcl)
+    private GrailsDomainBinder grailsDomainBinder = new GrailsDomainBinder()
 
     protected void setUp() {
         def buildSettings = new BuildSettings(new File("."))
@@ -121,8 +122,8 @@ class ScaffoldingTest {
         def constrainedProperties = GrailsDomainConfigurationUtil.evaluateConstraints(testClass)
         testClass.metaClass.getConstraints = {-> constrainedProperties }
 
-        GrailsDomainBinder.evaluateMapping(domainClass)
-        assert GrailsDomainBinder.getMapping(domainClass)?.identity?.generator == 'assigned'
+        grailsDomainBinder.evaluateMapping(domainClass)
+        assert grailsDomainBinder.getMapping(domainClass)?.identity?.generator == 'assigned'
 
         def sw = new StringWriter()
         templateGenerator.generateView domainClass, "_form", sw

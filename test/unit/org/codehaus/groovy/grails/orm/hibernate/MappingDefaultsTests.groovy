@@ -1,7 +1,6 @@
 package org.codehaus.groovy.grails.orm.hibernate
 
 import org.codehaus.groovy.grails.commons.GrailsDomainClass
-import org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsDomainBinder
 import org.codehaus.groovy.grails.plugins.GrailsPlugin
 import org.codehaus.groovy.grails.validation.ConstrainedProperty
 import org.hibernate.type.YesNoType
@@ -44,7 +43,7 @@ class MappingDefaults {
 
     void testGlobalUserTypes() {
         GrailsDomainClass domain = ga.getDomainClass("MappingDefaults")
-        def mapping = GrailsDomainBinder.getMapping(domain)
+        def mapping = grailsDomainBinder.getMapping(domain)
 
         assertEquals YesNoType, mapping.userTypes[Boolean]
 
@@ -59,7 +58,7 @@ class MappingDefaults {
 
     void testMappingDefaults() {
         GrailsDomainClass domain = ga.getDomainClass("MappingDefaults")
-        def mapping = GrailsDomainBinder.getMapping(domain)
+        def mapping = grailsDomainBinder.getMapping(domain)
 
         assertEquals "read-write", mapping?.cache?.usage
         assertEquals 'sequence',mapping?.identity?.generator

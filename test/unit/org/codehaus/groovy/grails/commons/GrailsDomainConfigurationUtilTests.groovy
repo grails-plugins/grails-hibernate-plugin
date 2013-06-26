@@ -46,8 +46,9 @@ class GrailsDomainConfigurationUtilTests extends TestCase {
     @Override
     protected void tearDown() {
         super.tearDown()
-        GrailsDomainBinder.NAMING_STRATEGIES.clear()
-        GrailsDomainBinder.NAMING_STRATEGIES.put(
+        GrailsDomainBinder grailsDomainBinder = new GrailsDomainBinder()
+        grailsDomainBinder.NAMING_STRATEGIES.clear()
+        grailsDomainBinder.NAMING_STRATEGIES.put(
               GrailsDomainClassProperty.DEFAULT_DATA_SOURCE, ImprovedNamingStrategy.INSTANCE)
         PluginManagerHolder.setPluginManager(null)
     }
