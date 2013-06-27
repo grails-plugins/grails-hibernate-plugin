@@ -1,11 +1,31 @@
 package org.codehaus.groovy.grails.orm.hibernate.validation
 
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+
 /**
  * Checks UniqueConstraint basing on Hibernate mapped classes.
  *
  * @author Alexey Sergeev
  */
 class HibernateMappingUniqueConstraintTests extends AbstractUniqueConstraintTests {
+
+    protected Class getUserClass() { UserHibUnique }
+    protected Class getLinkedUserClass() { LinkedUserHibUnique }
+
+    protected void setUp() {
+        super.setUp()
+
+        // need to re-parse the constraints block since the first time the classes aren't registered in
+        // the GrailsApplication, so the constraints are ignored. This is only needed here because
+        // they're not defined like they would be in an application
+        ga.getDomainClass(UserHibUnique.name).refreshConstraints()
+        ga.getDomainClass(LinkedUserHibUnique.name).refreshConstraints()
+    }
 
     @Override
     protected void configureDataSource() {
@@ -29,19 +49,10 @@ hibernate {
 }
 ''', "DataSource")
     }
-
-    @Override
-    void onSetUp() {
-        /**
-         * Well, here we define usual classes mapped using annotations.
-         * Yet constraints we also define right here as it is more convenient
-         * for the test case instead of creating separate Constraint file.
-         */
-        gcl.parseClass '''
-import javax.persistence.*
+}
 
 @Entity
-class User {
+class UserHibUnique {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
@@ -58,28 +69,21 @@ class User {
         code(unique:true)
     }
 }
-'''
-
-        gcl.parseClass '''
-import javax.persistence.*
 
 @Entity
-class LinkedUser {
+class LinkedUserHibUnique {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
 
     @ManyToOne
     @JoinColumn(name = "user1_id", nullable = false)
-    User user1
+    UserHibUnique user1
     @ManyToOne
     @JoinColumn(name = "user2_id", nullable = false)
-    User user2
+    UserHibUnique user2
 
     static constraints = {
         user2(unique:'user1')
-    }
-}
-'''
     }
 }

@@ -4,7 +4,7 @@
     "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <mapping class="User"/>
-        <mapping class="LinkedUser"/>
+        <mapping class="org.codehaus.groovy.grails.orm.hibernate.validation.UserHibUnique"/>
+        <mapping class="org.codehaus.groovy.grails.orm.hibernate.validation.LinkedUserHibUnique"/>
     </session-factory>
 </hibernate-configuration>

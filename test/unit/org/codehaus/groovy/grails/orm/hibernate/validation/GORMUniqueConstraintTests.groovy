@@ -1,6 +1,8 @@
 package org.codehaus.groovy.grails.orm.hibernate.validation
 
-import org.codehaus.groovy.grails.commons.DefaultGrailsDomainClass
+import grails.persistence.Entity
+
+import org.codehaus.groovy.grails.commons.DomainClassArtefactHandler
 import org.codehaus.groovy.grails.validation.exceptions.ConstraintException
 
 /**
@@ -10,12 +12,18 @@ import org.codehaus.groovy.grails.validation.exceptions.ConstraintException
  */
 class GORMUniqueConstraintTests extends AbstractUniqueConstraintTests {
 
+    protected Class getUserClass() { UserGormUnique }
+    protected Class getLinkedUserClass() { LinkedUserGormUnique }
+    protected getDomainClasses() {
+        [UserGormUnique, LinkedUserGormUnique]
+    }
+
     void testValidatorBeanPresence() {
-        assertTrue applicationContext.containsBean("UserValidator")
-        def validator = applicationContext.getBean("UserValidator")
+        assertTrue applicationContext.containsBean(getUserClass().name + "Validator")
+        def validator = applicationContext.getBean(getUserClass().name + "Validator")
         assertNotNull(validator.domainClass)
-        assertTrue applicationContext.containsBean("LinkedUserValidator")
-        validator = applicationContext.getBean("LinkedUserValidator")
+        assertTrue applicationContext.containsBean(getLinkedUserClass().name + "Validator")
+        validator = applicationContext.getBean(getLinkedUserClass().name + "Validator")
         assertNotNull(validator.domainClass)
     }
 
@@ -39,7 +47,7 @@ class GORMUniqueConstraintTests extends AbstractUniqueConstraintTests {
                 }
             }
             ''')
-            new DefaultGrailsDomainClass(userClass).constrainedProperties
+            ga.addArtefact(DomainClassArtefactHandler.TYPE, userClass).constrainedProperties
         }
 
         // Test list argument with wrong type (Long)
@@ -59,7 +67,7 @@ class GORMUniqueConstraintTests extends AbstractUniqueConstraintTests {
                 }
             }
             ''')
-            new DefaultGrailsDomainClass(userClass).constrainedProperties
+            ga.addArtefact(DomainClassArtefactHandler.TYPE, userClass).constrainedProperties
         }
 
         // Test argument with non-existent property value
@@ -79,7 +87,7 @@ class GORMUniqueConstraintTests extends AbstractUniqueConstraintTests {
                     }
                 }
                 ''')
-            new DefaultGrailsDomainClass(userClass).constrainedProperties
+            ga.addArtefact(DomainClassArtefactHandler.TYPE, userClass).constrainedProperties
         }
 
         // Test list argument with non-existent property value
@@ -99,7 +107,7 @@ class GORMUniqueConstraintTests extends AbstractUniqueConstraintTests {
                     }
                 }
                 ''')
-            new DefaultGrailsDomainClass(userClass).constrainedProperties
+            ga.addArtefact(DomainClassArtefactHandler.TYPE, userClass).constrainedProperties
         }
 
         // Test that right syntax doesn't throws exception
@@ -118,23 +126,19 @@ class GORMUniqueConstraintTests extends AbstractUniqueConstraintTests {
                 }
             }
             ''')
-        new DefaultGrailsDomainClass(userClass).constrainedProperties
+        ga.addArtefact(DomainClassArtefactHandler.TYPE, userClass).constrainedProperties
     }
-
-    @Override
-    void onSetUp() {
-        gcl.parseClass '''
-import grails.persistence.*
+}
 
 @Entity
-class User {
+class UserGormUnique {
     String login
     String grp
     String department
     String organization
     String code
 
-    static belongsTo = LinkedUser
+    static belongsTo = LinkedUserGormUnique
 
     static constraints = {
         login(unique:['grp','department'])
@@ -144,15 +148,12 @@ class User {
 }
 
 @Entity
-class LinkedUser {
+class LinkedUserGormUnique {
 
-    User user1
-    User user2
+    UserGormUnique user1
+    UserGormUnique user2
 
     static constraints = {
         user2(unique:'user1')
-    }
-}
-'''
     }
 }

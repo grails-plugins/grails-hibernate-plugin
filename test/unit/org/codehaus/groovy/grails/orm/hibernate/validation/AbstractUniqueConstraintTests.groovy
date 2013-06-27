@@ -7,8 +7,11 @@ import org.codehaus.groovy.grails.orm.hibernate.AbstractGrailsHibernateTests
  */
 abstract class AbstractUniqueConstraintTests extends AbstractGrailsHibernateTests {
 
+    protected abstract Class getUserClass()
+    protected abstract Class getLinkedUserClass()
+
     void testApplying() {
-        ga.getDomainClass("User").constrainedProperties.each {key, value ->
+        ga.getDomainClass(getUserClass().name).constrainedProperties.each {key, value ->
             if (key == 'code') {
                 value.appliedConstraints.each {
                     if (it.name == UniqueConstraint.UNIQUE_CONSTRAINT) assertTrue it.unique
@@ -33,7 +36,7 @@ abstract class AbstractUniqueConstraintTests extends AbstractGrailsHibernateTest
     }
 
     void testValidation() {
-        def userClass = ga.getDomainClass("User").clazz
+        def userClass = getUserClass()
 
         // The first object shouldn't fire any unique constraints
         def user = userClass.newInstance()
@@ -109,8 +112,8 @@ abstract class AbstractUniqueConstraintTests extends AbstractGrailsHibernateTest
     }
 
     void testRelationships() {
-        def userClass = ga.getDomainClass("User").clazz
-        def linkClass = ga.getDomainClass("LinkedUser").clazz
+        def userClass = getUserClass()
+        def linkClass = getLinkedUserClass()
 
         def user1 = userClass.newInstance()
         user1.code = "1"
