@@ -6,6 +6,9 @@ import grails.util.GrailsUtil
 import grails.util.GrailsWebUtil
 import grails.util.Metadata
 
+import org.springframework.mock.web.MockHttpServletRequest
+import org.codehaus.groovy.grails.plugins.testing.GrailsMockHttpServletRequest
+import org.codehaus.groovy.grails.plugins.testing.GrailsMockHttpServletResponse
 import org.codehaus.groovy.grails.commons.AnnotationDomainClassArtefactHandler
 import org.codehaus.groovy.grails.commons.DefaultGrailsApplication
 import org.codehaus.groovy.grails.commons.GrailsApplication
@@ -51,6 +54,7 @@ abstract class AbstractGrailsHibernateTests extends GroovyTestCase {
     MockApplicationContext ctx
     ApplicationContext appCtx
     ApplicationContext applicationContext
+    MockHttpServletRequest request
     def originalHandler
     SessionFactory sessionFactory
     Session session
@@ -108,6 +112,10 @@ abstract class AbstractGrailsHibernateTests extends GroovyTestCase {
         mockManager.doDynamicMethods()
 
         registerHibernateSession()
+
+        request = new GrailsMockHttpServletRequest(characterEncoding: "utf-8")
+        def response = new GrailsMockHttpServletResponse()
+        GrailsWebUtil.bindMockWebRequest(appCtx, request, response)
     }
 
      protected void configureDataSource() {

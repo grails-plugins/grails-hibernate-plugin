@@ -276,7 +276,6 @@ class AssociationBindingAuthor {
         author = Author.get(1)
         assertEquals 1, author.books.size()
 
-        def request = new MockHttpServletRequest()
         request.addParameter("books[1].title", "The Stand")
         request.addParameter("books[1].reviewers['joe'].id", "1")
         request.addParameter("books[1].reviewers['joe'].name", "Joseph Bloggs")
@@ -318,7 +317,6 @@ class AssociationBindingAuthor {
 
         def author = Author.newInstance(name:"Stephen King")
 
-        def request = new MockHttpServletRequest()
         request.addParameter("books[0].title", "The Shining")
         request.addParameter("books[0].pages[0].number", "1")
         request.addParameter("books[0].pages[1].number", "2")
