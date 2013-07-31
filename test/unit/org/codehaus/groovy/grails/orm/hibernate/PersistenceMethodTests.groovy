@@ -686,7 +686,7 @@ class PersistenceMethodTests extends AbstractGrailsHibernateTests {
         assertEquals 1, listResult.size()
 
         // test query with wrong argument type
-        shouldFail(MissingMethodException) {
+        shouldFail {
             domainClass.findAll(new Date())
         }
     }
