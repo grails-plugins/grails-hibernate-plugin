@@ -30,7 +30,7 @@ target (createHibernateCfgXml: 'Creates a hibernate.cfg.xml file') {
     cfgFile = new File("$basedir/grails-app/conf/hibernate/hibernate.cfg.xml")
     ant.mkdir dir: cfgFile.parent
 
-    if (cfgFile.exists() && !confirmInput('hibernate.cfg.xml already exists. Overwrite? [y/n]', 'overwrite.hibernate_cfg_xml')) {
+    if (cfgFile.exists() && !confirmInput('hibernate.cfg.xml already exists. Overwrite?', 'overwrite.hibernate_cfg_xml')) {
         return
     }
 
@@ -51,7 +51,6 @@ target (createHibernateCfgXml: 'Creates a hibernate.cfg.xml file') {
     copyGrailsResource cfgFile.path, templateFile
 
     event 'CreatedFile', [cfgFile.path]
-    grailsConsole.updateStatus "Created $cfgFile.path"
 }
 
 setDefaultTarget 'createHibernateCfgXml'
