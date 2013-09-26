@@ -16,6 +16,7 @@ grails.project.dependency.resolution = {
     log "warn"
 
     repositories {
+        mavenLocal()
         grailsCentral()
         mavenRepo "http://repo.grails.org/grails/core"
     }
