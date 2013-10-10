@@ -208,7 +208,7 @@ class HibernateMappingBuilderTests extends GroovyTestCase {
             }
         }
 
-        assertEquals "name", mapping.sort
+        assertEquals "name", mapping.sort.name
         assertEquals "desc", mapping.order
         assertEquals 'name',mapping.getPropertyConfig('things').sort
 
@@ -220,7 +220,7 @@ class HibernateMappingBuilderTests extends GroovyTestCase {
             }
         }
 
-        assertEquals "name", mapping.sort
+        assertEquals "name", mapping.sort.name
         assertEquals "desc", mapping.order
         assertEquals 'name',mapping.getPropertyConfig('things').sort
     }

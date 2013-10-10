@@ -34,7 +34,7 @@ class SortWithNestedPropertiesTests extends AbstractGrailsHibernateTests {
     }
 
     void testHibernateNamedQueriesBuilder() {
-        assertEquals(['A','a','b','B','C','c'], bookClass.manningBooks().list(sort:'author.name').author.name)
+        assertEqualsIgnoreCase(['A','a','b','B','C','c'], bookClass.manningBooks().list(sort:'author.name').author.name)
     }
 
     void testFindAllWherePersistentMethod() {
@@ -42,7 +42,7 @@ class SortWithNestedPropertiesTests extends AbstractGrailsHibernateTests {
     }
 
     void testFindAllByPersistentMethod() {
-        assertEquals(['A','a','b','B','C','c'], bookClass.findAllByPublisher('Manning', [sort:'author.name']).author.name)
+        assertEqualsIgnoreCase(['A','a','b','B','C','c'], bookClass.findAllByPublisher('Manning', [sort:'author.name']).author.name)
     }
 
     void testFindByPersistentMethod() {
@@ -50,23 +50,27 @@ class SortWithNestedPropertiesTests extends AbstractGrailsHibernateTests {
     }
 
     void testDeepSort() {
-        assertEquals(['A','a','b','B','C','c'], bookClass.list(sort:'author.person.name').author.person.name)
+        assertEqualsIgnoreCase(['A','a','b','B','C','c'], bookClass.list(sort:'author.person.name').author.person.name)
     }
 
     void testPreserveOtherParameters() {
-        assertEquals(['b','B','C'], bookClass.list(max:3, offset:2, sort:'author.name').author.name)
+        assertEqualsIgnoreCase(['b','B','C'], bookClass.list(max:3, offset:2, sort:'author.name').author.name)
         assertEquals(['C','a','b'], bookClass.list(max:3, offset:2, sort:'author.name', ignoreCase:false).author.name)
-        assertEquals(['b','B','C'], bookClass.manningBooks().list(max:3, offset:2, sort:'author.name').author.name)
-        assertEquals(['b','B','C'], bookClass.findAllByPublisher('Manning', [max:3, offset:2, sort:'author.name']).author.name)
-        assertEquals(['b','B','C'], bookClass.list(max:3, offset:2, sort:'author.person.name').author.person.name)
+        assertEqualsIgnoreCase(['b','B','C'], bookClass.manningBooks().list(max:3, offset:2, sort:'author.name').author.name)
+        assertEqualsIgnoreCase(['b','B','C'], bookClass.findAllByPublisher('Manning', [max:3, offset:2, sort:'author.name']).author.name)
+        assertEqualsIgnoreCase(['b','B','C'], bookClass.list(max:3, offset:2, sort:'author.person.name').author.person.name)
     }
 
+    void assertEqualsIgnoreCase(a, b) {
+        assertEquals(a.collect{it.toLowerCase()}, b.collect{it.toLowerCase()})
+    }
+    
     void testSortByEmbeddedProperty() {
-        assertEquals(['A','a','b','B','C','c'], bookClass.list(sort:'address.street').address.street)
+        assertEqualsIgnoreCase(['A','a','b','B','C','c'], bookClass.list(sort:'address.street').address.street)
     }
 
     void testDefaultSort() {
-        assertEquals(['A','a','b','B','C','c'], bookClass.list().address.street)
+        assertEqualsIgnoreCase(['A','a','b','B','C','c'], bookClass.list().address.street)
     }
 }
 
