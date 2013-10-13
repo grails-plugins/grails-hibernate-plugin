@@ -25,7 +25,6 @@ class HibernateMappingBuilderTests extends GroovyTestCase {
 //            one cache:true
 //            two ignoreNoteFound:false
 //        }
-//
 //    }
 
     void testIncludes() {
@@ -209,7 +208,7 @@ class HibernateMappingBuilderTests extends GroovyTestCase {
         }
 
         assertEquals "name", mapping.sort.name
-        assertEquals "desc", mapping.order
+        assertEquals "desc", mapping.sort.direction
         assertEquals 'name',mapping.getPropertyConfig('things').sort
 
         mapping = builder.evaluate {
@@ -221,7 +220,7 @@ class HibernateMappingBuilderTests extends GroovyTestCase {
         }
 
         assertEquals "name", mapping.sort.name
-        assertEquals "desc", mapping.order
+        assertEquals "desc", mapping.sort.direction
         assertEquals 'name',mapping.getPropertyConfig('things').sort
     }
 
@@ -303,7 +302,7 @@ class HibernateMappingBuilderTests extends GroovyTestCase {
     void testCascadesWithColumnsBlock() {
         def builder = new HibernateMappingBuilder("Foo")
         def mapping = builder.evaluate {
-             things cascade:'save-update'
+            things cascade:'save-update'
         }
         assertEquals 'save-update',mapping.getPropertyConfig('things').cascade
     }
@@ -496,8 +495,8 @@ class HibernateMappingBuilderTests extends GroovyTestCase {
     void testCustomCacheStrategy() {
         def builder = new HibernateMappingBuilder("Foo")
         def mapping = builder.evaluate {
-           table 'myTable'
-           cache usage:'read-only', include:'non-lazy'
+            table 'myTable'
+            cache usage:'read-only', include:'non-lazy'
         }
 
         assertEquals 'read-only', mapping.cache.usage
@@ -601,8 +600,8 @@ class HibernateMappingBuilderTests extends GroovyTestCase {
             lastName column:'Last_Name'
         }
 
-       assertEquals "First_Name",mapping.getPropertyConfig('firstName').column
-       assertEquals "Last_Name",mapping.getPropertyConfig('lastName').column
+        assertEquals "First_Name",mapping.getPropertyConfig('firstName').column
+        assertEquals "Last_Name",mapping.getPropertyConfig('lastName').column
     }
 
     void testSimpleColumnMappings() {
@@ -616,8 +615,8 @@ class HibernateMappingBuilderTests extends GroovyTestCase {
             }
         }
 
-       assertEquals "First_Name",mapping.getPropertyConfig('firstName').column
-       assertEquals "Last_Name",mapping.getPropertyConfig('lastName').column
+        assertEquals "First_Name",mapping.getPropertyConfig('firstName').column
+        assertEquals "Last_Name",mapping.getPropertyConfig('lastName').column
     }
 
     void testComplexColumnMappings() {
@@ -638,14 +637,14 @@ class HibernateMappingBuilderTests extends GroovyTestCase {
             }
         }
 
-       assertEquals "First_Name",mapping.columns.firstName.column
-       assertTrue mapping.columns.firstName.lazy
-       assertTrue mapping.columns.firstName.unique
-       assertEquals java.sql.Clob,mapping.columns.firstName.type
-       assertEquals 255,mapping.columns.firstName.length
-       assertEquals 'foo',mapping.columns.firstName.index
-       assertEquals "text",mapping.columns.firstName.sqlType
-       assertEquals "Last_Name",mapping.columns.lastName.column
+        assertEquals "First_Name",mapping.columns.firstName.column
+        assertTrue mapping.columns.firstName.lazy
+        assertTrue mapping.columns.firstName.unique
+        assertEquals java.sql.Clob,mapping.columns.firstName.type
+        assertEquals 255,mapping.columns.firstName.length
+        assertEquals 'foo',mapping.columns.firstName.index
+        assertEquals "text",mapping.columns.firstName.sqlType
+        assertEquals "Last_Name",mapping.columns.lastName.column
     }
 
     void testComplexColumnMappingsWithoutColumnsBlock() {
@@ -664,14 +663,14 @@ class HibernateMappingBuilderTests extends GroovyTestCase {
             lastName column:'Last_Name'
         }
 
-       assertEquals "First_Name",mapping.columns.firstName.column
-       assertTrue mapping.columns.firstName.lazy
-       assertTrue mapping.columns.firstName.unique
-       assertEquals java.sql.Clob,mapping.columns.firstName.type
-       assertEquals 255,mapping.columns.firstName.length
-       assertEquals 'foo',mapping.columns.firstName.index
-       assertEquals "text",mapping.columns.firstName.sqlType
-       assertEquals "Last_Name",mapping.columns.lastName.column
+        assertEquals "First_Name",mapping.columns.firstName.column
+        assertTrue mapping.columns.firstName.lazy
+        assertTrue mapping.columns.firstName.unique
+        assertEquals java.sql.Clob,mapping.columns.firstName.type
+        assertEquals 255,mapping.columns.firstName.length
+        assertEquals 'foo',mapping.columns.firstName.index
+        assertEquals "text",mapping.columns.firstName.sqlType
+        assertEquals "Last_Name",mapping.columns.lastName.column
     }
 
     void testPropertyWithMultipleColumns() {
