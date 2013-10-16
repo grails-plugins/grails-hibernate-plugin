@@ -124,8 +124,8 @@ class SavePersistentMethodTests extends AbstractGrailsHibernateTests {
         }
 
         assert msg.contains('Validation Error(s) occurred during save():')
-        assert msg.contains("- Field error in object 'org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam' on field 'homePage': rejected value [invalidurl]; codes [typeMismatch.org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.homePage")
-        assert msg.contains("- Field error in object 'org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam' on field 'name': rejected value [null]; codes [org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name.nullable.error.org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name")
+        assert team.errors.getFieldError('homePage').codes.contains('typeMismatch.org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.homePage')
+        assert team.errors.getFieldError('name').codes.contains('org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name.nullable.error.org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name')
     }
 
     void testFailOnErrorFalseWithValidationErrors() {
@@ -147,8 +147,8 @@ class SavePersistentMethodTests extends AbstractGrailsHibernateTests {
         }
 
         assert msg.contains('Validation Error(s) occurred during save():')
-        assert msg.contains("- Field error in object 'org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam' on field 'homePage': rejected value [invalidurl]; codes [typeMismatch.org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.homePage")
-        assert msg.contains("- Field error in object 'org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam' on field 'name': rejected value [null]; codes [org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name.nullable.error.org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name")
+        assert team.errors.getFieldError('homePage').codes.contains('org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.homePage.typeMismatch.error')
+        assert team.errors.getFieldError('name').codes.contains('org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name.nullable.error.org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name')
     }
 
     void testFailOnErrorConfigTrueWithValidationErrorsAndAutoFlush() {
@@ -210,8 +210,8 @@ class SavePersistentMethodTests extends AbstractGrailsHibernateTests {
         }
 
         assert msg.contains('Validation Error(s) occurred during save():')
-        assert msg.contains("- Field error in object 'org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam' on field 'homePage': rejected value [invalidurl]; codes [typeMismatch.org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.homePage")
-        assert msg.contains("- Field error in object 'org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam' on field 'name': rejected value [null]; codes [org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name.nullable.error.org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name")
+        assert team.errors.getFieldError('homePage').codes.contains('typeMismatch.org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.homePage')
+        assert team.errors.getFieldError('name').codes.contains('org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name.nullable.error.org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name')
     }
 
     void testFailOnErrorConfigDoesNotIncludeMatchingPackageWithValidationErrors() {
@@ -253,8 +253,8 @@ class SavePersistentMethodTests extends AbstractGrailsHibernateTests {
         }
 
         assert msg.contains('Validation Error(s) occurred during save():')
-        assert msg.contains("- Field error in object 'org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam' on field 'homePage': rejected value [invalidurl]; codes [typeMismatch.org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.homePage")
-        assert msg.contains("- Field error in object 'org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam' on field 'name': rejected value [null]; codes [org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name.nullable.error.org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name")
+        assert msg.contains("- Field error in object 'org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam' on field 'homePage': rejected value [invalidurl]; codes [org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.homePage.typeMismatch.error,org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.homePage.typeMismatch,savePersistentMethodTeam.homePage.typeMismatch.error,savePersistentMethodTeam.homePage.typeMismatch,typeMismatch.org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.homePage,typeMismatch.homePage,typeMismatch.java.net.URL,typeMismatch]; arguments [homePage]; default message [no protocol: invalidurl]")
+        assert msg.contains("- Field error in object 'org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam' on field 'name': rejected value [null]; codes [org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name.nullable.error.org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name,org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name.nullable.error.name,org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name.nullable.error.java.lang.String,org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name.nullable.error,savePersistentMethodTeam.name.nullable.error.org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name,savePersistentMethodTeam.name.nullable.error.name,savePersistentMethodTeam.name.nullable.error.java.lang.String,savePersistentMethodTeam.name.nullable.error,org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name.nullable.org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name,org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name.nullable.name,org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name.nullable.java.lang.String,org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name.nullable,savePersistentMethodTeam.name.nullable.org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name,savePersistentMethodTeam.name.nullable.name,savePersistentMethodTeam.name.nullable.java.lang.String,savePersistentMethodTeam.name.nullable,nullable.org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam.name,nullable.name,nullable.java.lang.String,nullable]; arguments [name,class org.codehaus.groovy.grails.orm.hibernate.SavePersistentMethodTeam]; default message [Property [{0}] of class [{1}] cannot be null]")
     }
 
     void testSaveWithoutValidation() {
