@@ -336,7 +336,7 @@ Using Grails' default naming strategy: '${ImprovedNamingStrategy.name}'"""
 
     static final onChange = { event ->
         LOG.debug "onChange() started"
-
+        
         def allDatasourceNames = [GrailsDomainClassProperty.DEFAULT_DATA_SOURCE] as Set
         for (name in application.config.keySet()) {
             if (name.startsWith('dataSource_')) {
@@ -347,7 +347,7 @@ Using Grails' default naming strategy: '${ImprovedNamingStrategy.name}'"""
         def datasourceNames
         if (event.source instanceof Class) {
             GrailsDomainClass dc = application.getDomainClass(event.source.name)
-            if (!dc.getMappingStrategy().equalsIgnoreCase(GrailsDomainClass.GORM)) {
+            if (!dc || !GrailsHibernateUtil.isMappedWithHibernate(dc)) {
                 return
             }
             grailsDomainBinder.clearMappingCache(event.source)
@@ -379,7 +379,7 @@ Using Grails' default naming strategy: '${ImprovedNamingStrategy.name}'"""
                        }
                     }
                 }
-
+                
                 if (event.source instanceof Class) {
                     GrailsDomainClass dc = application.getDomainClass(event.source.name)
                     if (!dc.abstract && GrailsHibernateUtil.usesDatasource(dc, datasourceName)) {
