@@ -18,10 +18,12 @@ class Parent {
     }
 }
 
+@Entity
 class Child1 extends Parent {
     String someField
 }
 
+@Entity
 class Child2 extends Parent {
     boolean anotherBoolean
 
