@@ -22,7 +22,7 @@ grails.project.dependency.resolution = {
     }
 
     dependencies {
-        String datastoreVersion = '2.0.6.RELEASE'
+        String datastoreVersion = '2.0.7.RELEASE'
 
         compile "org.grails:grails-datastore-core:$datastoreVersion", 
                 "org.grails:grails-datastore-gorm:$datastoreVersion", 
