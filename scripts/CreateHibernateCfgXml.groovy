@@ -44,7 +44,7 @@ target (createHibernateCfgXml: 'Creates a hibernate.cfg.xml file') {
         }
         else {
             // template not found in application, use default template
-            templateFile = new FileSystemResource("$hibernatePluginDir/src/java/hibernate.cfg.xml")
+            templateFile = new FileSystemResource("$hibernatePluginDir/src/resources/hibernate.cfg.xml")
         }
     }
 
