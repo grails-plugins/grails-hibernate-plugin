@@ -22,13 +22,26 @@ grails.project.dependency.resolution = {
     }
 
     dependencies {
-        String datastoreVersion = '2.0.7.RELEASE'
+        String datastoreVersion = '3.0.0.BUILD-SNAPSHOT'
 
-        compile "org.grails:grails-datastore-core:$datastoreVersion", 
-                "org.grails:grails-datastore-gorm:$datastoreVersion", 
-                "org.grails:grails-datastore-gorm-hibernate:$datastoreVersion", 
+        compile "org.grails:grails-datastore-gorm-hibernate:$datastoreVersion", 
                 "org.grails:grails-datastore-simple:$datastoreVersion"
 
+        compile('org.hibernate:hibernate-core:3.6.10.Final') {
+            exclude group:'commons-logging', name:'commons-logging'
+            exclude group:'commons-collections', name:'commons-collections'
+            exclude group:'org.slf4j', name:'slf4j-api'
+            exclude group:'xml-apis', name:'xml-apis'
+            exclude group:'dom4j', name:'dom4j'
+            exclude group:'antlr', name: 'antlr'
+        }
+        compile "javax.validation:validation-api:1.0.0.GA"
+        compile "org.hibernate:hibernate-validator:4.1.0.Final"
+        
+        runtime "org.hibernate:hibernate-entitymanager:3.6.10.Final" 
+        runtime "org.hibernate:hibernate-commons-annotations:3.2.0.Final"
+        runtime "org.hibernate:hibernate-ehcache:3.6.10.Final"
+        runtime "net.sf.ehcache:ehcache-core:2.4.6"
         runtime 'cglib:cglib:2.2.2'
 
         test 'org.spockframework:spock-grails-support:0.7-groovy-2.0', {
