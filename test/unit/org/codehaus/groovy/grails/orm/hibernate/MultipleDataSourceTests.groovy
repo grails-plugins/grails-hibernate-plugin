@@ -178,6 +178,7 @@ dataSource {
 
 dataSource_ds2 {
     pooled = true
+    transactional = false     // Disable BE1PC transactions
     driverClassName = 'org.h2.Driver'
     url = 'jdbc:h2:mem:testDb2'
     username = 'sa'
@@ -188,6 +189,7 @@ dataSource_ds2 {
 
 dataSource_ds3 {
     pooled = true
+    transactional = false
     driverClassName = 'org.h2.Driver'
     url = 'jdbc:h2:mem:testDb3'
     username = 'sa'
@@ -198,6 +200,7 @@ dataSource_ds3 {
 
 dataSource_ds4 {
     pooled = true
+    transactional = false
     driverClassName = 'org.h2.Driver'
     url = 'jdbc:h2:mem:testDb4'
     username = 'sa'
