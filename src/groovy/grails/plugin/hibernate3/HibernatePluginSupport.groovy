@@ -21,22 +21,13 @@ import org.codehaus.groovy.grails.commons.GrailsDomainClassProperty
 import org.codehaus.groovy.grails.commons.spring.DefaultRuntimeSpringConfiguration
 import org.codehaus.groovy.grails.commons.spring.GrailsRuntimeConfigurator
 import org.codehaus.groovy.grails.commons.spring.RuntimeSpringConfiguration
-import org.codehaus.groovy.grails.orm.hibernate.ConfigurableLocalSessionFactoryBean
-import org.codehaus.groovy.grails.orm.hibernate.GrailsHibernateTransactionManager
-import org.codehaus.groovy.grails.orm.hibernate.HibernateDatastore
-import org.codehaus.groovy.grails.orm.hibernate.HibernateEventListeners
-import org.codehaus.groovy.grails.orm.hibernate.SessionFactoryHolder
+import org.codehaus.groovy.grails.orm.hibernate.*
 import org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsDomainBinder
 import org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsHibernateUtil
 import org.codehaus.groovy.grails.orm.hibernate.cfg.HibernateUtils
 import org.codehaus.groovy.grails.orm.hibernate.events.PatchedDefaultFlushEventListener
 import org.codehaus.groovy.grails.orm.hibernate.proxy.HibernateProxyHandler
-import org.codehaus.groovy.grails.orm.hibernate.support.AggregatePersistenceContextInterceptor
-import org.codehaus.groovy.grails.orm.hibernate.support.ClosureEventTriggeringInterceptor
-import org.codehaus.groovy.grails.orm.hibernate.support.FlushOnRedirectEventListener
-import org.codehaus.groovy.grails.orm.hibernate.support.GrailsOpenSessionInViewInterceptor
-import org.codehaus.groovy.grails.orm.hibernate.support.HibernateDialectDetectorFactoryBean
-import org.codehaus.groovy.grails.orm.hibernate.support.SpringLobHandlerDetectorFactoryBean
+import org.codehaus.groovy.grails.orm.hibernate.support.*
 import org.codehaus.groovy.grails.orm.hibernate.validation.HibernateConstraintsEvaluator
 import org.codehaus.groovy.grails.orm.hibernate.validation.HibernateDomainClassValidator
 import org.codehaus.groovy.grails.orm.hibernate.validation.PersistentConstraintFactory
@@ -55,7 +46,6 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader
 import org.springframework.context.ApplicationContext
 import org.springframework.jdbc.support.nativejdbc.CommonsDbcpNativeJdbcExtractor
 import org.springframework.orm.hibernate3.HibernateAccessor
-import org.springframework.validation.Validator
 
 /**
  * Implements the core parts of GORM.
@@ -87,18 +77,13 @@ class HibernatePluginSupport {
         }
 
         def datasourceNames = []
-        def persistenceInterceptorDatasourceNames = []
         if (getSpringConfig().containsBean('dataSource')) {
             datasourceNames << GrailsDomainClassProperty.DEFAULT_DATA_SOURCE
-            persistenceInterceptorDatasourceNames << GrailsDomainClassProperty.DEFAULT_DATA_SOURCE
         }
 
         for (name in application.config.keySet()) {
             if (name.startsWith('dataSource_')) {
                 datasourceNames << name - 'dataSource_'
-                if (application.config[name].persistenceInterceptor) {
-                    persistenceInterceptorDatasourceNames << name - 'dataSource_'
-                }
             }
         }
 
@@ -114,9 +99,7 @@ class HibernatePluginSupport {
 
         hibernateEventListeners(HibernateEventListeners)
 
-        persistenceInterceptor(AggregatePersistenceContextInterceptor) {
-            dataSourceNames = persistenceInterceptorDatasourceNames
-        }
+        persistenceInterceptor(AggregatePersistenceContextInterceptor)
 
         for (String datasourceName in datasourceNames) {
             LOG.debug "processing DataSource $datasourceName"
