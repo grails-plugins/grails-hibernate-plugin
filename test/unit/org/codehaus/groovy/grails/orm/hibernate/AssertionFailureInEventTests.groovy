@@ -13,10 +13,10 @@ class AssertionFailureInEventTests extends AbstractGrailsHibernateTests {
     }
 
     // test for HHH-2763 and GRAILS-4453
-    void testNoAssertionErrorInEvent() {
+    void testNoAssertionErrorInEventDuringFlush() {
         def Parent = ga.getDomainClass(AssertionParent.name).clazz
         def Child = ga.getDomainClass(AssertionChild.name).clazz
-        def p = Parent.newInstance().save()
+        def p = Parent.newInstance(s:"parent").save()
         p.addToChilds(Child.newInstance(s:"one"))
         p.save(flush:true)
 
@@ -32,11 +32,30 @@ class AssertionFailureInEventTests extends AbstractGrailsHibernateTests {
         p = Parent.get(1)
         p.childs.each { println it.s }
     }
+
+    // test for GPHIB-19
+    void testNoAssertionErrorInEventDuringAutoflush() {
+        def Parent = ga.getDomainClass(AssertionParent.name).clazz
+        def Child = ga.getDomainClass(AssertionChild.name).clazz
+        def p = Parent.newInstance(s: 'parent').save()
+        p.addToChilds(Child.newInstance(s: 'one'))
+        p.addToChilds(Child.newInstance(s: 'two'))
+        p.save(flush: true)
+
+        Parent.withNewSession {
+            Parent.withTransaction {
+                p = Parent.get(1)
+                p.s = 'chanched'
+                Parent.list()
+            }
+        }
+    }
 }
 
 @Entity
 class AssertionParent {
     static hasMany = [childs : AssertionChild]
+    String s
 
     def beforeUpdate = {
         calc()
