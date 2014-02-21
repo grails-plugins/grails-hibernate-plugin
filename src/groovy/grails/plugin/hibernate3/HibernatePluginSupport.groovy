@@ -25,6 +25,7 @@ import org.codehaus.groovy.grails.orm.hibernate.*
 import org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsDomainBinder
 import org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsHibernateUtil
 import org.codehaus.groovy.grails.orm.hibernate.cfg.HibernateUtils
+import org.codehaus.groovy.grails.orm.hibernate.events.PatchedDefaultAutoFlushEventListener
 import org.codehaus.groovy.grails.orm.hibernate.events.PatchedDefaultFlushEventListener
 import org.codehaus.groovy.grails.orm.hibernate.proxy.HibernateProxyHandler
 import org.codehaus.groovy.grails.orm.hibernate.support.*
@@ -252,7 +253,8 @@ Using Grails' default naming strategy: '${ImprovedNamingStrategy.name}'"""
 
                 entityInterceptor = ref("entityInterceptor$suffix")
 
-                eventListeners = ['flush':       new PatchedDefaultFlushEventListener(),
+                eventListeners = ['auto-flush':  new PatchedDefaultAutoFlushEventListener(),
+                                  'flush':       new PatchedDefaultFlushEventListener(),
                                   'save':        eventTriggeringInterceptor,
                                   'save-update': eventTriggeringInterceptor,
                                   'pre-load':    eventTriggeringInterceptor,
