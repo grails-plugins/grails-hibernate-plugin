@@ -126,9 +126,24 @@ dataSource {
     username = "sa"
     password = ""
     dbCreate = "create-drop"
-    url = "jdbc:h2:mem:grailsIntTestDB"
+    url = "jdbc:h2:mem:grailsIntTestDB;MVCC=TRUE;LOCK_TIMEOUT=10000"
     properties {
-      maxWait = 10000
+       initialSize = 5
+       maxActive = 50
+       minIdle = 5
+       maxIdle = 25
+       maxWait = 10000
+       maxAge = 10 * 60000
+       timeBetweenEvictionRunsMillis = 5000
+       minEvictableIdleTimeMillis = 60000
+       validationQuery = "SELECT 1"
+       validationQueryTimeout = 3
+       validationInterval = 15000
+       testOnBorrow = true
+       testWhileIdle = true
+       testOnReturn = false
+       jdbcInterceptors = "ConnectionState;StatementCache(max=200)"
+       defaultTransactionIsolation = java.sql.Connection.TRANSACTION_READ_COMMITTED
     }
 }
 hibernate {
