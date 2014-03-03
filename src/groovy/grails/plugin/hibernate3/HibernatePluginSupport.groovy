@@ -247,6 +247,8 @@ Using Grails' default naming strategy: '${ImprovedNamingStrategy.name}'"""
                 hibernateProperties = ref("hibernateProperties$suffix")
 
                 grailsApplication = ref("grailsApplication", true)
+                
+                transactionManager = ref("transactionManager")
 
                 lobHandler = ref("lobHandlerDetector$suffix")
 
