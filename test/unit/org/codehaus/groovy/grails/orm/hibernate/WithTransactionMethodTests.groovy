@@ -1,17 +1,28 @@
 package org.codehaus.groovy.grails.orm.hibernate
 
+import grails.test.mixin.*
+
 class WithTransactionMethodTests extends AbstractGrailsHibernateTests {
 
     void testWithTransactionMethod() {
-        def domainClass = ga.getDomainClass("Author1")
+        doTestWithTransactionMethod(ga.getDomainClass("Author1"))
+    }
+
+    void testWithTransactionMethodAndHiloGenerator() {
+        doTestWithTransactionMethod(ga.getDomainClass("Author2"))
+    }
+    
+    private doTestWithTransactionMethod(domainClass) {
         def authors = []
-        authors << domainClass.newInstance()
-        authors << domainClass.newInstance()
-        authors << domainClass.newInstance()
+        5.times {
+            authors << domainClass.newInstance()
+        }
 
         authors[0].name = "Stephen King"
         authors[1].name = "John Grisham"
         authors[2].name = "James Patterson"
+        authors[3].name = "Ernest Hemingway"
+        authors[4].name = "Mika Waltari"
 
         domainClass.clazz.withTransaction { status ->
             authors[0].save()
@@ -22,7 +33,16 @@ class WithTransactionMethodTests extends AbstractGrailsHibernateTests {
         assertEquals 2, results.size()
 
         domainClass.clazz.withTransaction { status ->
-            authors[2].save(true)
+            authors[2].save(flush: true)
+            domainClass.clazz.withNewSession { 
+                authors[3].save(flush: true)
+            }
+            domainClass.clazz.withNewTransaction { status2 ->
+                assertEquals 2, domainClass.clazz.list().size()
+                authors[4].save(flush: true)
+                status2.setRollbackOnly()
+            }
+            assertEquals 4, domainClass.clazz.list().size()
             status.setRollbackOnly()
         }
 
@@ -49,6 +69,30 @@ class Author1 {
     String name
     Set books
     static hasMany = [books:Book1]
+    boolean equals(obj) { name == obj?.name }
+    int hashCode() { name ? name.hashCode() : super.hashCode() }
+    String toString() { name }
+}
+
+class Book2 {
+    static mapping = { id generator: 'org.hibernate.id.enhanced.TableGenerator', params: [optimizer: 'hilo', increment_size: 1, segment_value: 'book'] }
+    Long id
+    Long version
+    static belongsTo = Author2
+    Author2 author
+    String title
+    boolean equals(obj) { title == obj?.title }
+    int hashCode() { title ? title.hashCode() : super.hashCode() }
+    String toString() { title }
+}
+
+class Author2 {
+    static mapping = { id generator: 'org.hibernate.id.enhanced.TableGenerator', params: [optimizer: 'hilo', increment_size: 1, segment_value: 'author'] }
+    Long id
+    Long version
+    String name
+    Set books
+    static hasMany = [books:Book2]
     boolean equals(obj) { name == obj?.name }
     int hashCode() { name ? name.hashCode() : super.hashCode() }
     String toString() { name }
