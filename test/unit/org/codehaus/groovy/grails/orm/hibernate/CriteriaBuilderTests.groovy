@@ -174,17 +174,24 @@ class CriteriaBuilderAuthor {
         }
 
         assert authors
-
+    
         // test lock association
 
-        authors = authorClass.withCriteria {
-            eq('name', 'Stephen King')
-            books {
-                lock true
+        try {
+            authors = authorClass.withCriteria {
+                eq('name', 'Stephen King')
+                books {
+                    lock true
+                }
+            }
+    
+            assert authors
+        } catch (Exception e) {
+            // workaround for h2 issue https://code.google.com/p/h2database/issues/detail?id=541
+            if(!e.cause?.message?.contains("Feature not supported")) {
+                throw e
             }
         }
-
-        assert authors
     }
 
     void testJoinMethod() {
