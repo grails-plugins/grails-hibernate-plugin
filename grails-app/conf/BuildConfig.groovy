@@ -47,8 +47,10 @@ grails.project.dependency.resolution = {
         } 
         compile "org.hibernate:hibernate-commons-annotations:3.2.0.Final"
 
-        runtime "org.hibernate:hibernate-ehcache:$hibernateVersion"
-        runtime "net.sf.ehcache:ehcache-core:2.4.6"
+        runtime "org.hibernate:hibernate-ehcache:$hibernateVersion", {
+            exclude group: 'net.sf.ehcache', name 'ehcache-core'
+        }
+        runtime "net.sf.ehcache:ehcache:2.8.1"
         runtime 'cglib:cglib:2.2.2'
     }
 
