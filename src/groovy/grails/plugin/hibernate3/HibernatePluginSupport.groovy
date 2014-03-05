@@ -200,6 +200,7 @@ Using Grails' default naming strategy: '${ImprovedNamingStrategy.name}'"""
 
                 hibProps.putAll(hibConfig.flatten().toProperties('hibernate'))
                 hibProps.remove('hibernate.reload')
+                hibProps.remove('hibernate.singleSession')
 
                 // move net.sf.ehcache.configurationResourceName to "top level" if it exists
                 if (hibProps.'hibernate.net.sf.ehcache.configurationResourceName') {
@@ -302,6 +303,10 @@ Using Grails' default naming strategy: '${ImprovedNamingStrategy.name}'"""
                         flushMode = HibernateAccessor.FLUSH_AUTO
                     }
                     sessionFactory = ref("sessionFactory$suffix")
+                    
+                    if(hibConfig?.containsKey('singleSession')) {
+                        singleSession = hibConfig.singleSession as Boolean
+                    }
                 }
 
                 if (getSpringConfig().containsBean("controllerHandlerMappings")) {
