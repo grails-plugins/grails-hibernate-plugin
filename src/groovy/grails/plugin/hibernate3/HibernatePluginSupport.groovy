@@ -455,10 +455,12 @@ Using Grails' default naming strategy: '${ImprovedNamingStrategy.name}'"""
     }
     
     static doWithApplicationContext = { ApplicationContext ctx ->
-        PlatformTransactionManager transactionManager = ctx.getBean("transactionManager", PlatformTransactionManager)
-        ctx.getBeansOfType(ConfigurableLocalSessionFactoryBean).each { String beanName, ConfigurableLocalSessionFactoryBean sessionFactory ->
-            if(sessionFactory.transactionManager instanceof PlatformTransactionManagerProxy) {
-                sessionFactory.transactionManager.targetTransactionManager = transactionManager
+        if(ctx.containsBean("transactionManager")) {
+            PlatformTransactionManager transactionManager = ctx.getBean("transactionManager", PlatformTransactionManager)
+            ctx.getBeansOfType(ConfigurableLocalSessionFactoryBean).each { String beanName, ConfigurableLocalSessionFactoryBean sessionFactory ->
+                if(sessionFactory.transactionManager instanceof PlatformTransactionManagerProxy) {
+                    sessionFactory.transactionManager.targetTransactionManager = transactionManager
+                }
             }
         }
     }
