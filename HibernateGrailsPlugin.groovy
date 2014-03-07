@@ -40,6 +40,8 @@ class HibernateGrailsPlugin {
     def scm = [url: 'https://github.com/grails-plugins/grails-hibernate-plugin']
 
     def doWithSpring = HibernatePluginSupport.doWithSpring
+    
+    def doWithApplicationContext = HibernatePluginSupport.doWithApplicationContext
 
     def doWithDynamicMethods = HibernatePluginSupport.doWithDynamicMethods
 

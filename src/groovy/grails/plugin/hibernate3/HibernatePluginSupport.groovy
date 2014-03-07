@@ -46,6 +46,7 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader
 import org.springframework.context.ApplicationContext
 import org.springframework.jdbc.support.nativejdbc.CommonsDbcpNativeJdbcExtractor
 import org.springframework.orm.hibernate3.HibernateAccessor
+import org.springframework.transaction.PlatformTransactionManager
 
 /**
  * Implements the core parts of GORM.
@@ -248,8 +249,6 @@ Using Grails' default naming strategy: '${ImprovedNamingStrategy.name}'"""
                 hibernateProperties = ref("hibernateProperties$suffix")
 
                 grailsApplication = ref("grailsApplication", true)
-                
-                transactionManager = ref("transactionManager")
 
                 lobHandler = ref("lobHandlerDetector$suffix")
 
@@ -268,6 +267,8 @@ Using Grails' default naming strategy: '${ImprovedNamingStrategy.name}'"""
                                   'post-delete': eventTriggeringInterceptor]
 
                 hibernateEventListeners = ref('hibernateEventListeners')
+                
+                transactionManager = new PlatformTransactionManagerProxy()
             }
 
             if (grails.util.Environment.current.isReloadEnabled()) {
@@ -451,5 +452,14 @@ Using Grails' default naming strategy: '${ImprovedNamingStrategy.name}'"""
             return springConfig.getBeanDefinition("dataSource")
         }
         return null
+    }
+    
+    static doWithApplicationContext = { ApplicationContext ctx ->
+        PlatformTransactionManager transactionManager = ctx.getBean("transactionManager", PlatformTransactionManager)
+        ctx.getBeansOfType(ConfigurableLocalSessionFactoryBean).each { String beanName, ConfigurableLocalSessionFactoryBean sessionFactory ->
+            if(sessionFactory.transactionManager instanceof PlatformTransactionManagerProxy) {
+                sessionFactory.transactionManager.targetTransactionManager = transactionManager
+            }
+        }
     }
 }
