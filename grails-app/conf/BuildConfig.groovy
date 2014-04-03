@@ -22,14 +22,15 @@ grails.project.dependency.resolution = {
     }
 
     dependencies {
-        String datastoreVersion = '3.0.5.BUILD-SNAPSHOT'
+        String datastoreVersion = '3.0.4.RELEASE'
         String hibernateVersion = '3.6.10.Final'
 
         compile "org.grails:grails-datastore-core:$datastoreVersion",
                 "org.grails:grails-datastore-gorm:$datastoreVersion",
                 "org.grails:grails-datastore-gorm-hibernate:$datastoreVersion",
                 "org.grails:grails-datastore-simple:$datastoreVersion"
-
+                
+        compile 'commons-collections:commons-collections:3.2.1'
         compile("org.hibernate:hibernate-core:$hibernateVersion") {
             exclude group:'commons-logging', name:'commons-logging'
             exclude group:'commons-collections', name:'commons-collections'
