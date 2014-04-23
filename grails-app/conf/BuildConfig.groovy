@@ -22,7 +22,7 @@ grails.project.dependency.resolution = {
     }
 
     dependencies {
-        String datastoreVersion = '3.0.4.RELEASE'
+        String datastoreVersion = '3.0.6.RELEASE'
         String hibernateVersion = '3.6.10.Final'
 
         compile "org.grails:grails-datastore-core:$datastoreVersion",
@@ -47,10 +47,8 @@ grails.project.dependency.resolution = {
             exclude group:'org.hibernate.javax.persistence', name:'hibernate-jpa-2.0-api'
         } 
         compile "org.hibernate:hibernate-commons-annotations:3.2.0.Final"
-
         runtime "org.hibernate:hibernate-ehcache:$hibernateVersion"
         runtime "net.sf.ehcache:ehcache-core:2.4.8"
-        runtime 'cglib:cglib:2.2.2'
     }
 
     plugins {
