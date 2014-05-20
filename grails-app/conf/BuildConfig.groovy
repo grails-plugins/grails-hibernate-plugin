@@ -1,3 +1,9 @@
+if(System.getenv('TRAVIS_BRANCH')) {
+    grails.project.repos.grailsCentral.username = System.getenv("GRAILS_CENTRAL_USERNAME")
+    grails.project.repos.grailsCentral.password = System.getenv("GRAILS_CENTRAL_PASSWORD")    
+}
+
+
 grails.project.work.dir = 'target'
 
 forkConfig = false
@@ -28,7 +34,11 @@ grails.project.dependency.resolution = {
         compile "org.grails:grails-datastore-core:$datastoreVersion",
                 "org.grails:grails-datastore-gorm:$datastoreVersion",
                 "org.grails:grails-datastore-gorm-hibernate:$datastoreVersion",
-                "org.grails:grails-datastore-simple:$datastoreVersion"
+                "org.grails:grails-datastore-simple:$datastoreVersion", {
+                exclude group:'org.springframework', name:'spring-context'
+                exclude group:'org.springframework', name:'spring-core'
+                exclude group:'org.springframework', name:'spring-beans'
+        }
                 
         compile 'commons-collections:commons-collections:3.2.1'
         compile("org.hibernate:hibernate-core:$hibernateVersion") {
@@ -43,7 +53,7 @@ grails.project.dependency.resolution = {
         compile "javax.validation:validation-api:1.0.0.GA"
         compile "org.hibernate:hibernate-validator:4.1.0.Final"        
         compile "org.hibernate:hibernate-entitymanager:$hibernateVersion", {
-            excludes group:'javassist', name:'javassist'
+            exclude group:'javassist', name:'javassist'
             exclude group:'org.hibernate.javax.persistence', name:'hibernate-jpa-2.0-api'
         } 
         compile "org.hibernate:hibernate-commons-annotations:3.2.0.Final"

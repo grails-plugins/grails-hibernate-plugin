@@ -1,0 +1,13 @@
+language: groovy
+jdk:
+- oraclejdk7
+before_script:
+- rm -rf target
+script: ./travis-build.sh
+env:
+  global:
+  - GIT_NAME="Graeme Rocher"
+  - GIT_EMAIL="graeme.rocher@gmail.com"
+  - secure: xy8TmPlIoIB249hQ3lzOFsj9ep3XOp3zDo12M9Uu0nBttI9aP+27sG05Djz4Fp8BrW3MhgtNM2VIBWRDz7XkbEl2/PPMEE5gvLiQ0SgMsz9/15DV8WcwMz7FQDpqf5CizznPXt6P7QsleQnXdV+keX7GvsxHy/bzH0X+aC4k24M=
+  - secure: YJqPyD8ZPwcKZFsDCNzMbgL85Co9iIvGL5VpusAc6xyVCkpNv2StoaqKe5wiKvXzehrKIfYwiCOFffShqPHf7QHXHkhgwX7+z4hUxeSmEK9sjGnWy+dQS0Oq3+A/cfeHM7lW+TOOlWkWLE106KcVhydGq0t9x3LicuHQCFme7Ww=
+  - secure: q4qMjB3MQIWVyCYQa7qKt0xZ1YG2rx3SIoxqM0MQYcjcQ0JjetAu0rWDnLmoQxZRDj36dmvKb5AG00APfa2ikg3y4vdyd69xVWdGH0kVoOTBcSXwlkI/U0gxi7drzu7qUHZ9Ax9dGQ5ItgwbO0c8ys3qJVzqkMs+dHWmTJuVzgk=
