@@ -8,7 +8,7 @@ rm -rf *.zip
 filename=$(find . -name "grails-*.zip" | head -1)
 filename=$(basename $filename)
 
-echo "Publishing plugin grails-spring-security-core with version $version"
+echo "Publishing plugin 'hibernate' version $version"
 
 if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_REPO_SLUG == "grails-plugins/grails-hibernate-plugin" && $TRAVIS_PULL_REQUEST == 'false' ]]; then
   git config --global user.name "$GIT_NAME"
