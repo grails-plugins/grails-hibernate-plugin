@@ -38,6 +38,9 @@ grails.project.dependency.resolution = {
                 exclude group:'org.springframework', name:'spring-context'
                 exclude group:'org.springframework', name:'spring-core'
                 exclude group:'org.springframework', name:'spring-beans'
+                exclude group:'org.grails', name:'grails-bootstrap'
+                exclude group:'org.grails', name:'grails-core'                
+                exclude group:'org.grails', name:'grails-async'                 
         }
                 
         compile 'commons-collections:commons-collections:3.2.1'
