@@ -60,12 +60,14 @@ grails.project.dependency.resolution = {
             exclude group:'org.hibernate.javax.persistence', name:'hibernate-jpa-2.0-api'
         } 
         compile "org.hibernate:hibernate-commons-annotations:3.2.0.Final"
-        runtime "org.hibernate:hibernate-ehcache:$hibernateVersion"
-        runtime "net.sf.ehcache:ehcache-core:2.4.8"
+        runtime "org.hibernate:hibernate-ehcache:$hibernateVersion", {
+            exclude group: 'net.sf.ehcache', name: 'ehcache-core'
+        }
+        runtime "net.sf.ehcache:ehcache:2.8.1"
     }
 
     plugins {
-        build(':release:3.0.1', ':rest-client-builder:1.0.3') {
+        build(':release:3.0.1', ':rest-client-builder:2.0.1') {
             export = false
         }
 
