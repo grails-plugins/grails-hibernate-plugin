@@ -28,7 +28,7 @@ grails.project.dependency.resolution = {
     }
 
     dependencies {
-        String datastoreVersion = '3.1.0.RELEASE'
+        String datastoreVersion = '3.1.1.RELEASE'
         String hibernateVersion = '3.6.10.Final'
 
         compile "org.grails:grails-datastore-core:$datastoreVersion",
@@ -63,7 +63,7 @@ grails.project.dependency.resolution = {
         runtime "org.hibernate:hibernate-ehcache:$hibernateVersion", {
             exclude group: 'net.sf.ehcache', name: 'ehcache-core'
         }
-        runtime "net.sf.ehcache:ehcache:2.8.1"
+        runtime "net.sf.ehcache:ehcache-core:2.4.8"
     }
 
     plugins {
