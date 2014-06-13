@@ -63,7 +63,6 @@ grails.project.dependency.resolution = {
         runtime "org.hibernate:hibernate-ehcache:$hibernateVersion", {
             exclude group: 'net.sf.ehcache', name: 'ehcache-core'
         }
-        runtime "net.sf.ehcache:ehcache-core:2.4.8"
     }
 
     plugins {
