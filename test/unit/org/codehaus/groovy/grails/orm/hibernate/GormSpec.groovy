@@ -92,13 +92,6 @@ abstract class GormSpec extends Specification {
         catch(e) {
             // means it is not active, ignore
         }
-        try {
-            getClass().classLoader.loadClass("net.sf.ehcache.CacheManager")
-                                    .getInstance()?.shutdown()
-        }
-        catch(e) {
-            // means there is no cache, ignore
-        }
         gcl = null
         grailsApplication = null
         mockManager = null
@@ -190,9 +183,6 @@ dataSource {
     url = "jdbc:h2:mem:grailsIntTestDB"
 }
 hibernate {
-    cache.use_second_level_cache=true
-    cache.use_query_cache=true
-    cache.provider_class='net.sf.ehcache.hibernate.EhCacheProvider'
 }
 ''', "DataSource")
     }
