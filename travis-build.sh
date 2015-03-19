@@ -10,7 +10,8 @@ filename=$(basename $filename)
 
 echo "Publishing plugin 'hibernate' version $version"
 
-if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_REPO_SLUG == "grails-plugins/grails-hibernate-plugin" && $TRAVIS_PULL_REQUEST == 'false' ]]; then
+if [[ ( ( $TRAVIS_BRANCH == 'master' && $(grep '\-SNAPSHOT' plugin.xml) ) || $TRAVIS_TAG =~ ^v[[:digit:]] )
+    && $TRAVIS_REPO_SLUG == "grails-plugins/grails-hibernate-plugin" && $TRAVIS_PULL_REQUEST == 'false' ]]; then
   git config --global user.name "$GIT_NAME"
   git config --global user.email "$GIT_EMAIL"
   git config --global credential.helper "store --file=~/.git-credentials"
@@ -34,8 +35,9 @@ if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_REPO_SLUG == "grails-plugins/grails-
 
   ./grailsw publish-plugin --no-scm --allow-overwrite --non-interactive
 else
-  echo "Not on master branch, so not publishing"
+  echo "Not on master branch with snapshot version or a tagged release version, so not publishing"
   echo "TRAVIS_BRANCH: $TRAVIS_BRANCH"
   echo "TRAVIS_REPO_SLUG: $TRAVIS_REPO_SLUG"
   echo "TRAVIS_PULL_REQUEST: $TRAVIS_PULL_REQUEST"
+  echo "TRAVIS_TAG: $TRAVIS_TAG"
 fi
