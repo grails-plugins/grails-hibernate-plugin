@@ -27,7 +27,7 @@ class HibernateGrailsPlugin {
     def description = "Provides integration between Grails and Hibernate 3 through GORM"
 
     def grailsVersion = "2.3.2 > *"
-    def version = "3.6.10.19"
+    def version = "3.6.10.20-SNAPSHOT"
     def observe = ['domainClass']
     def loadAfter = ['controllers', 'domainClass']
     def watchedResources = ["file:./grails-app/conf/hibernate/**.xml"]
@@ -40,7 +40,7 @@ class HibernateGrailsPlugin {
     def scm = [url: 'https://github.com/grails-plugins/grails-hibernate-plugin']
 
     def doWithSpring = HibernatePluginSupport.doWithSpring
-    
+
     def doWithApplicationContext = HibernatePluginSupport.doWithApplicationContext
 
     def doWithDynamicMethods = HibernatePluginSupport.doWithDynamicMethods
