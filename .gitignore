@@ -21,3 +21,6 @@ stacktrace.log
 .project
 
 *.sha1
+/build
+.gradle
+.nb-gradle
